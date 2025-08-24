@@ -155,6 +155,41 @@ Two small instances
 Bottom line
 You can exploit real relativity-grade physics at home: detect **atmospheric muons** and do angle/attenuation experiments. Start with CosmicWatch for reliability or GM-coincidence for cost, and use a cloud chamber if you want to *see* tracks. ([Cosmic Connection][1], [GitHub][4], [IEEE Spectrum][5], [CERN][6])
 
+It’s a **two-channel coincidence counter** for a DIY muon “telescope.” In plain terms, it only “counts” an event when **both** Geiger channels fire within a tiny time window, which filters out random background and keeps mostly through-going cosmic muons.
+
+What it does, step by step
+
+* Sets hardware interrupts on pins D2 and D3 (RISING). Each interrupt records a timestamp (`micros()`) and marks its channel as “hit.”
+* In `loop()`, it quickly copies those volatile flags/timestamps with interrupts briefly off (to avoid race conditions).
+* If **both** channels have a hit and their timestamps differ by ≤ 1000 microseconds (≈1 ms), it prints `"muon"`, clears the hit flags, and waits 10 ms (dead time).
+* If only one tube fires, or they’re farther apart than the window, it ignores the event.
+
+Why this is sensible
+
+* Definition: coincidence counting = detecting **near-simultaneous** signals on separate detectors to identify a single particle passing through both.
+* Coincidence rejects most local radiation (which tends to trigger just one tube) and preferentially accepts steep, straight cosmic-ray muons.
+
+Key parameters and quirks
+
+* **Window:** `abs((long)(ta - tb)) <= 1000` sets \~1 ms; tune this (e.g., 100–500 µs) for your pulse widths and electronics.
+* **Dead time:** `delay(10)` caps the max rate (\~100/s), which is fine for muons (\~few/hour for small geometry).
+* **ISR discipline:** ISRs only set flags and times (good). Printing happens in `loop()` (also good).
+* **Volatiles & atomics:** `noInterrupts()/interrupts()` protect multi-byte reads (good on AVR).
+* **Overflow:** `micros()` rolls over (\~70 min on AVR). Near rollover, a true coincidence might be missed once; not a practical issue.
+* **Minor nit:** `coinc` is declared but unused; safe to remove.
+
+Two small instances
+
+* Two GM boards produce TTL pulses 300 µs apart → the sketch prints `muon` once and resets.
+* A gamma hit triggers only the top tube → no second pulse within 1 ms → no print (rejected as background).
+
+
+
+
+
+
+
+
 [1]: https://cosmic.lbl.gov/SKliewer/Cosmic_Rays/Muons.htm?utm_source=chatgpt.com "Muons - Lawrence Berkeley National Laboratory"
 [2]: https://www.hyperphysics.phy-astr.gsu.edu/hbase/Particles/muonatm.html?utm_source=chatgpt.com "Atmospheric Muons - HyperPhysics"
 [3]: https://www.sciencedirect.com/science/article/pii/S0168900218307599?utm_source=chatgpt.com "Characterization of atmospheric muons at sea level using a cosmic ray ..."
