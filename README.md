@@ -2,25 +2,6 @@
 
 # Table of Contents
 
-- [TEC-1 cosmic ray detector](#tec-1-cosmic-ray-detector)
-  - [Using basic cosmic ray detector circuit](#using-basic-cosmic-ray-detector-circuit)
-- [Muons created by cosmic rays](#muons-created-by-cosmic-rays)
-  - [Step 1. What is a muon?](#step-1-what-is-a-muon)
-  - [Step 2. Problem without relativity](#step-2-problem-without-relativity)
-  - [Step 3. Relativity saves the day](#step-3-relativity-saves-the-day)
-  - [Step 4. Evidence](#step-4-evidence)
-- [Build a small cosmic-ray muon detector](#build-a-small-cosmic-ray-muon-detector)
-  - [Three workable DIY paths](#three-workable-diy-paths)
-    - [Plastic scintillator + SiPM (CosmicWatch)](#plastic-scintillator--sipm-cosmicwatch)
-    - [Two GM tubes in coincidence (muon telescope)](#two-gm-tubes-in-coincidence-muon-telescope)
-    - [Diffusion cloud chamber](#diffusion-cloud-chamber)
-  - [Minimal shopping lists](#minimal-shopping-lists)
-    - [Scintillator route](#scintillator-route)
-    - [GM-coincidence route](#gm-coincidence-route)
-    - [Cloud chamber route](#cloud-chamber-route)
-  - [Quick Arduino coincidence sketch](#quick-arduino-coincidence-sketch)
-  - [What data you can actually get](#what-data-you-can-actually-get)
-  - [Bottom line](#bottom-line)
 
 
 
